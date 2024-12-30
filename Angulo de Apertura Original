@@ -1,0 +1,25 @@
+from numpy import arctan
+Z= float(input("Distancia de los centelladores [m] " ))
+X= float(input("Largo del centellador [m] " ))
+Y= float(input("Ancho del centellador [m] " ))
+#Frecuencia=float(input("La frecuencia es: [Cuentas/s]"))
+R2_x=X**2 + Z**2
+R2_y = Y**2 + Z**2
+d1=R2_y + Y**2
+d2 = R2_x + X**2
+c1=X/(R2_y**0.5)
+c2=Y/(R2_x**0.5)
+oa=d1*c1
+ob=d2*c2
+A_b = 0.5*(oa*arctan(c1) + ob*arctan(c2) - Z*(X*arctan(X/Z) + Y*arctan(Y/Z)))
+#flujo=Frecuencia/A_b
+
+print("Valor de R2_x: ", R2_x)
+print("Valor de R2_y: ", R2_y)
+print(d1,d2,c1,c2)
+print(oa,ob)
+
+#print(arctan(X/Z))
+print("La abertura es: ", A_b, "m^2 sr")
+
+#print("El flujo es: ", flujo)
