@@ -1,0 +1,25 @@
+import pandas as pd
+
+# Leer el archivo original
+df = pd.read_csv('data_hour_buena.txt', delimiter='\t')
+
+# Convertir la columna 'Fecha_Hora' a tipo datetime
+df['Fecha_Hora'] = pd.to_datetime(df['Fecha_Hora'], format='%d/%m/%Y %H:%M')
+
+# Asignar la zona horaria de CDMX
+df['Fecha_Hora_CDMX'] = df['Fecha_Hora'].dt.tz_localize('America/Mexico_City')
+
+# Convertir a UTC
+df['Fecha_Hora_UTC'] = df['Fecha_Hora_CDMX'].dt.tz_convert('UTC')
+
+# Formatear la columna de UTC en el formato deseado
+df['Fecha_Hora_UTC'] = df['Fecha_Hora_UTC'].dt.strftime('%d/%m/%Y %H:%M')
+
+# Eliminar columnas intermedias si no son necesarias
+df = df[['Fecha_Hora_UTC', 'Data']]
+
+# Guardar el archivo resultante
+df.to_csv('data_hour_utc.txt', sep='\t', index=False)
+
+# Imprimir el DataFrame para verificar
+print(df)
