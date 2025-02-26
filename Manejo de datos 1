@@ -1,0 +1,41 @@
+
+
+###############################################
+## ESTE CODIGO ES EL RESPONSABLE DE QUITAR LOS SALTOS DE LINEA ##
+## DE LOS NUMEROS Y DE ELIMINAR LAS FILAS VACIAS DEL ARCHIVO ##
+#UTILIZADO POR ULTIMA VEZ: 28 DE SEPTIEMBRE DE 2024#
+###############################################
+
+
+
+import pandas as pd
+
+# Paso 1: Corregir los saltos de línea
+with open('280524_PRUEBA.txt', 'r') as file:
+    lines = file.readlines()
+
+corrected_lines = []
+
+for i, line in enumerate(lines):
+    line = line.strip()
+    if i > 0 and line.isdigit():  # Si la línea actual es un número y no es la primera línea
+        corrected_lines[-1] = corrected_lines[-1].strip() + line  # Añadir el número a la línea anterior
+    else:
+        corrected_lines.append(line)
+
+# Escribir las líneas corregidas en un archivo temporal
+with open('archivo_corregido.txt', 'w') as file:
+    for line in corrected_lines:
+        file.write(line + '\n')
+
+# Paso 2: Cargar el archivo corregido en un DataFrame de pandas
+df = pd.read_csv('archivo_corregido.txt', delimiter='\t')  # Reemplaza 'archivo.txt' con el nombre de tu archivo original
+
+# Paso 3: Eliminar filas que están completamente vacías
+df = df.dropna(how='all')
+
+# Paso 4: Guardar el DataFrame resultante en un nuevo archivo de texto
+df.to_csv('2805_data.txt', sep='\t', index=False)
+
+# Imprimir el DataFrame para verificar el resultado
+print(df)
