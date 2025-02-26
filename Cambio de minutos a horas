@@ -1,0 +1,27 @@
+#####################################
+## ESTE CODIGO USA PANDAS PARA DISMINUIR EL NUMERO DE LINEAS PARA PROGRAMAR
+## TAMBIEN SUMA DESDE EL MINUTO 00:00 AL 00:59
+#####################################
+
+
+
+import pandas as pd
+
+# Leer el archivo original (asegúrate de que el archivo tenga el formato correcto)
+df = pd.read_csv('data_min.txt', delimiter='\t')
+
+# Convertir la columna 'Fecha_Hora' a tipo datetime
+df['Fecha_Hora'] = pd.to_datetime(df['Fecha_Hora'], format='%d/%m/%Y %H:%M')
+
+# Agrupar los datos por hora y calcular la suma o el promedio (depende de lo que necesites)
+# Aquí se asume que 'Data' es la columna que deseas promediar
+df_hourly = df.resample('H', on='Fecha_Hora').sum().reset_index()
+
+# Formatear la columna 'Fecha_Hora' en el formato deseado
+df_hourly['Fecha_Hora'] = df_hourly['Fecha_Hora'].dt.strftime('%d/%m/%Y %H:%M')
+
+# Guardar el archivo resultante
+df_hourly.to_csv('data_hour.txt', sep='\t', index=False)
+
+# Imprimir el DataFrame para verificar
+print(df_hourly)
