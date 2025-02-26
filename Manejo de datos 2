@@ -1,0 +1,25 @@
+#################################
+## ESTE CODIGO REEMPLAZA EL TRABAJO DE EXCEL
+## COMBINA LAS PRIMERAS DOS COLUMNAS BAJO EL NOMBRE DE Fecha_Hora, 
+## Elimina la suma total de cuentas y asigna el nombre de Data a la CR
+## Dando como resultado el formato estandar de los datos 
+#################################
+import pandas as pd
+
+# Leer el archivo original
+df = pd.read_csv('2805_data.txt', header=None, names=['Fecha', 'Hora', 'Eliminar', 'Data'])
+
+# Combinar las columnas 'Fecha' y 'Hora' en una nueva columna 'Fecha_Hora' en el formato deseado
+df['Fecha_Hora'] = pd.to_datetime(df['Fecha'] + ' ' + df['Hora'], format='%d/%m/%Y %H:%M:%S').dt.strftime('%d/%m/%Y %H:%M')
+
+# Eliminar las columnas 'Fecha', 'Hora' y 'Eliminar'
+df = df.drop(columns=['Fecha', 'Hora', 'Eliminar'])
+
+# Reorganizar las columnas para que 'Fecha_Hora' esté al inicio
+df = df[['Fecha_Hora', 'Data']]
+
+# Guardar el archivo con tabuladores como delimitador
+df.to_csv('2805_data1min.txt', sep='\t', index=False)
+
+# Imprimir el DataFrame para verificar
+print(df)
